@@ -1,0 +1,89 @@
+//Andres Escala version 2
+Sem_Norte(0,1);
+Sem_Sur(0,1);
+//Al inicio, la liana esta libre para que cualquier comunidad la use!
+int liana_Norte=0; //Cuantos monos del norte estan o quieren usar la liana
+int liana_Sur=0; //Cuantos monos del sur estan o quieren usar la liana
+void Funcion Comunidad_Norte();
+void Funcion Comunidad_Sur();
+void Funcion usar_Liana();
+int main(){
+
+Lanzamos los hilos de cada mono de cada comunidad con un parametro que indica su comunidad: 1 = Norte, 2 = Sur //El parametro se usara para la liana
+los hilos reciben la funcion de su respectiva Comunidad (Norte o Sur)
+Lanzamos los semaforos
+
+}
+
+void usar_Liana(Parametro del hilo){
+if Parametro del hilo == 1 //El mono es del norte
+	if liana_Sur==0 //No hay monos del sur ocupando la liana
+		P(Sem_Norte) //Los monos del Sur tienen que esperar a que pasen los del norte
+        	liana_Norte++;
+		do 
+			printf(Mono del norte cruzando por la liana)
+			int time = random entre 3 a 6 seg
+			sleep(time)
+			liana_Norte--; //El mono del Norte ahora pertenece a los del Sur
+			Comunidad_Sur++; //La poblacion de la comunidad sur aumenta
+		while(liana_Norte!=0) //Hasta que no haya ningun mono del sur usando la liana
+		//Terminaron de pasar los monos del Norte
+		V(Sem_Norte) //Los monos del Sur pueden usar la liana
+
+	else //Hay monos del sur ocupando la liana
+		printf("\nLos monos del Sur estan ocupando la liana! Los monos del norte se estan poniendo en fila mientras esperan!\n");
+           	sem_wait(&norte); //Se bloquea la variable para evitar que la modifiquen
+           	liana_Norte++;
+           	sem_post(&norte);
+
+
+else //El mono es del Sur
+	if liana_Norte==0 //Si no hay monos del norte ocupando la liana
+		P(Sem_Sur) //Los monos del Norte tienen que esperar a que pasen los desur
+		do 
+			printf(Mono del sur cruzando por la liana)
+			int time = random entre 3 a 6 seg
+			sleep(time)
+			liana_Sur--; //El mono del Sur ahora pertenece a los del norte
+			Comunidad_Norte++; //La poblacion de la comunidad norte aumenta
+		while(liana_Sur!=0) //Hasta que no haya ningun mono del sur usando la liana
+		//Terminaron de pasar los monos del Sur
+		V(sem_Sur) //Los monos del Norte pueden usar la liana
+
+	else //Hay monos del norte ocupando la liana
+		printf("\nLos monos del Norte estan ocupando la liana! Los monos delsur se estan poniendo en fila mientras esperan!\n");
+           	sem_wait(&sur); //Se bloquea la variable para evitar que la modifiquen
+           	liana_Sur++;
+           	sem_post(&sur);	
+}
+
+void Comunidad_Norte(Parametro del hilo){
+int time = random entre 3 a 10 seg para pensar si quiere viajar o quiere quedarse jugando
+sleep(time)
+Usamos un random para decidir quienes van a usar la liana
+int migrar = random entre 0 (no quiere) y 1 (si quiere) 
+if migrar == 1
+	liana_Norte++;
+	usar_Liana(Parametro del hilo);
+else
+	printf(Mono prefiere quedarse para jugar un rato)
+	int juegar = random de 3 a 15 segundos para que juegue
+	sleep(juegar)
+	Comunidad_Norte(Parametro del hilo); //Se vuelve a llamar a la funcion para repetir el proceso y ver si el mono cambio de opinion
+}
+
+void Comunidad_Sur(Parametro del hilo){
+int time = random entre 3 a 10 seg para pensar si quiere viajar o quiere quedarse jugando
+sleep(time)
+Usamos un random para decidir quienes van a usar la liana
+int migrar = random entre 0 (no quiere) y 1 (si quiere) 
+if migrar == 1
+	liana_Sur++;
+	usar_Liana(Parametro del hilo);
+else
+	printf(Mono prefiere quedarse para jugar un rato)
+	int juegar = random de 3 a 15 segundos para que juegue
+	sleep(juegar)
+	Comunidad_Sur(Parametro del hilo); //Se vuelve a llamar a la funcion para repetir el proceso y ver si el mono cambio de opinion
+}
+
